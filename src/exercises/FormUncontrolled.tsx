@@ -1,4 +1,5 @@
-import UserForm from "../components/UserForm";
+// import UserForm from "../components/UserForm"; // denne bruges ikke til fordel for UserFormData
+import UserForm from "../components/UserFormData"; // denne bruges i stedet for UserForm
 import { BaseProps } from "../types";
 import { useState } from "react";
 import { User } from "../data/data";

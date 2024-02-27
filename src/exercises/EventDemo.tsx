@@ -15,7 +15,7 @@ export default function EventDemo1({ title }: BaseProps) {
             </div>
             <ImageButton
                 image="https://upload.wikimedia.org/wikipedia/commons/5/5e/WhatsApp_icon.png"
-                onClick={() => setTextFromBtn("Phone Button")}
+                onClick={() => setTextFromBtn("Phone Button")} // inline event handler
             />
             <ImageButton
                 image="https://upload.wikimedia.org/wikipedia/commons/d/dc/Teacup.svg"
