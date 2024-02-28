@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BaseProps } from "../types";
-const SERVER_URL = "http://localhost:7000/users";
+const SERVER_URL = "http://localhost:8040/users";
 const DELAY = 500;
 
 type User = { id: number; name: string };
@@ -14,6 +14,7 @@ export default function FetchDemo1({ title }: BaseProps) {
     const [userId, setUserId] = useState(1);
     const [user, setUser] = useState<User | null>(null);
     const [loading, setLoading] = useState(true);
+
     //Use this to fetch the next user when the "Next User" button is clicked
     //Make sure you understand why we don't need useEffect here
     const fetchNextUser = async () => {
@@ -21,21 +22,34 @@ export default function FetchDemo1({ title }: BaseProps) {
         //Do not set call setUserId here it will cause an extra render
         setLoading(true);
         const theUser = await fetchUser(nextUser);
+        console.log(theUser);
         setLoading(false);
         setUser(theUser);
     };
 
     //Call fetchUser(..) immediately when the component is mounted
-    fetchUser(userId).then((response) => {
-        setUser(response);
-        console.log(response);
-    });
+    // fetchUser(userId).then((response) => {
+    //     setUser(response);
+    //     console.log(response);
+    // });
+
     useEffect(() => {
-        fetchUser(userId).then((response) => {
-            setUser(response);
-            console.log(response);
-        });
-    }, []);
+        const controller = new AbortController();
+        const signal = controller.signal;
+
+        try {
+            fetchUser(userId, { signal }).then((response) => { // signal is used to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away)
+                setUser(response); // initally user is null, so this will be the first time the user is set
+                console.log(response);
+                setLoading(false); 
+            });
+        } catch (error) {
+            console.log(error);
+        }
+
+        return () => controller.abort(); // clean up function to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away) 
+
+    }, [userId]); // dependency array, so it only runs once
 
     return (
         <>
@@ -43,6 +57,7 @@ export default function FetchDemo1({ title }: BaseProps) {
             {user && JSON.stringify(user)}
             <br />
             <button onClick={fetchNextUser}>Next User</button>
+            { loading && <p>Loading...</p>} {/* if loading is true, show "Loading..."*/}
         </>
     );
 }
