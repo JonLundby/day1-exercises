@@ -38,17 +38,17 @@ export default function FetchDemo1({ title }: BaseProps) {
         const signal = controller.signal;
 
         try {
-            fetchUser(userId, { signal }).then((response) => { // signal is used to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away)
+            fetchUser(userId, { signal }).then((response) => {
+                // signal is used to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away)
                 setUser(response); // initally user is null, so this will be the first time the user is set
                 console.log(response);
-                setLoading(false); 
+                setLoading(false);
             });
         } catch (error) {
             console.log(error);
         }
 
-        return () => controller.abort(); // clean up function to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away) 
-
+        return () => controller.abort(); // clean up function to abort the fetch request if the component is unmounted before the fetch is done (e.g. if the user navigates away)
     }, [userId]); // dependency array, so it only runs once
 
     return (
@@ -57,7 +57,7 @@ export default function FetchDemo1({ title }: BaseProps) {
             {user && JSON.stringify(user)}
             <br />
             <button onClick={fetchNextUser}>Next User</button>
-            { loading && <p>Loading...</p>} {/* if loading is true, show "Loading..."*/}
+            {loading && <p>Loading...</p>} {/* if loading is true, show "Loading..."*/}
         </>
     );
 }
