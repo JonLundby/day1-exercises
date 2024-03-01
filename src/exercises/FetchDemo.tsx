@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { BaseProps } from "../types";
-const SERVER_URL = "http://localhost:8040/users";
+const SERVER_URL = "http://localhost:8000/users";
 const DELAY = 500;
 
 type User = { id: number; name: string };
