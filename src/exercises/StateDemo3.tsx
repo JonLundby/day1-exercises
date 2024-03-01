@@ -18,7 +18,7 @@ export default function StateDemo3({ title }: Props) {
         //This is the only place you have to change something
         users.push(newUser);
         setUsers([...users]);
-        console.log(users);
+        // console.log(users);
     };
 
     return (
